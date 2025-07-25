@@ -8,14 +8,15 @@ ClientHandler::ClientHandler(qintptr socketdesc, QString str)
     socket = new QTcpSocket();
     socket->setSocketDescriptor(socketdesc);
     socket->open(QIODeviceBase::WriteOnly);
-    //connect(socket, &QTcpSocket::readyRead,this,&ClientHandler::okumayahazir);
-    socket->write(m_str.toUtf8());
+    connect(socket, &QTcpSocket::readyRead,this,&ClientHandler::okumayahazir);
+
 }
 
 void ClientHandler::start()
 {
     QEventLoop loop;
     loop.exec();
+    socket->write(m_str.toUtf8());
 }
 
 void ClientHandler::okumayahazir()

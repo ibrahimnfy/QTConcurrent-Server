@@ -10,7 +10,7 @@ class ClientHandler : public QObject
 {
     Q_OBJECT
 public:
-    ClientHandler(qintptr socketdesc, QString str);
+    explicit ClientHandler(qintptr socketdesc, QString str);
     void start();
 private:
     QTcpSocket *socket;

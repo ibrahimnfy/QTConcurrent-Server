@@ -21,13 +21,27 @@ void MainWindow::baglantidayken()
 {
     qDebug()<< "sjss";
     QTcpSocket * clientSocket = server->nextPendingConnection();
-    qintptr desc = clientSocket->socketDescriptor();
-    clientSocket->deleteLater();
-    QtConcurrent::run([desc](){
-        qDebug()<< "sass";
-
-        ClientHandler handler(desc, "asdfg");
-        handler.start();
+    connect(clientSocket,&QTcpSocket::readyRead,this,[clientSocket](){
+        QByteArray data = clientSocket->readAll();
+        QtConcurrent::run([data, clientSocket](){
+            qDebug() << "[QtConcurrent] Başlıyor";
+            qDebug() << "Client verisi geldi:" << data << "Thread:" << QThread::currentThreadId();
+            QMetaObject::invokeMethod(clientSocket, [clientSocket]() {
+                clientSocket->write("MESAJINI ALDIM CLIENT BU DA SANA CEVABIM");
+            });
+        });
     });
+        //qintptr desc = clientSocket->socketDescriptor();
+        // clientSocket->deleteLater();
+        // QTimer::singleShot(0, this, [desc]() {
+        //     QtConcurrent::run([desc]() {
+        //         qDebug() << "[QtConcurrent] Başlıyor";
+        //         auto *handler = new ClientHandler(desc, "asdfg");
+        //         handler->start();
+        //         delete handler;
+        //     });
+        // });
+
+
 }
 

@@ -11,6 +11,7 @@
 #include <QtConcurrent/QtConcurrentRun>
 #include <QFuture>
 #include <QFutureWatcher>
+#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
